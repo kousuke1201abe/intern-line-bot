@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   # for LINE webhook
-  post '/callback' => 'webhook#callback'
+  post '/callback' => 'line_webhook#callback'
 end

@@ -46,3 +46,5 @@ gem 'bootsnap', require: false
 gem 'listen', group: :development
 
 gem 'natto'
+
+gem 'dotenv-rails'

@@ -15,6 +15,13 @@ class MatsuoBasho
     match_beats?(5, 7, 5, 7, 7)
   end
 
+  def message(symbol)
+    {
+      type: 'text',
+      text: symbol == :haiku ? "おっ俳句じゃん\u{261D}" : "それ短歌ね\u{1F91A}"
+    }
+  end
+
   private
 
   def match_beats?(*beats)
@@ -32,7 +39,7 @@ class MatsuoBasho
   def mecab_array
     arr = Array.new
     Natto::MeCab.new.parse(phrase) do |mecab_node|
-      unless mecab_node.is_eos? || mecab_node.pos == "記号"
+      unless mecab_node.is_eos? || mecab_node.pos == "記号" || mecab_node.feature.split(",").last == "*"
         arr << { pos: mecab_node.pos, letters: mecab_node.letters }
       end
     end
