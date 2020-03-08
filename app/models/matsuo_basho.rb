@@ -2,6 +2,7 @@ class MatsuoBasho
   attr_reader :phrase
 
   ALLOWED_POS_MAP = ["名詞", "動詞", "形容詞", "形容動詞", "副詞", "連体詞", "接続詞", "感動詞", "接頭詞", "フィラー"]
+  HAIKU_MESSAGE_MAP = ["俳句じゃん\u{261D}", "五七五\u{1F4AE}", "よっ俳人\u{1F61A}"]
 
   def initialize(phrase:)
     @phrase = phrase
@@ -18,7 +19,7 @@ class MatsuoBasho
   def message(symbol)
     {
       type: 'text',
-      text: symbol == :haiku ? "俳句じゃん\u{261D}" : "それ短歌ね\u{1F91A}"
+      text: symbol == :haiku ? HAIKU_MESSAGE_MAP.sample : "それ短歌ね\u{1F91A}"
     }
   end
 
