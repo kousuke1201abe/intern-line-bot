@@ -8,20 +8,44 @@ class MatsuoBasho
     @phrase = phrase
   end
 
-  def haiku?
+  def senryu?
     match_beats?(5, 7, 5)
+  end
+
+  def haiku?
+    kigo.present? && match_beats?(5, 7, 5)
   end
 
   def tanka?
     match_beats?(5, 7, 5, 7, 7)
   end
 
+  def kigo
+    Widget.pluck(:name).map { |name| phrase.scan(name).first }.compact.join(",")
+  end
+
   def message(symbol)
-    if phrase
     {
       type: 'text',
-      text: symbol == :haiku ? HAIKU_MESSAGE_MAP.sample : "それ短歌ね\u{1F91A}"
+      text: text(symbol)
     }
+  end
+
+  def text(symbol)
+    if symbol == :haiku
+      text_for_haiku.chomp!
+    elsif symbol == :senryu
+      "それ川柳ね\u{1F91A}"
+    elsif symbol == :tanka?
+      "それ短歌ね\u{1F91A}"
+    end
+  end
+
+  def text_for_haiku
+    <<~EOS
+      #{HAIKU_MESSAGE_MAP.sample}
+      季語 #{kigo}
+    EOS
   end
 
   private
