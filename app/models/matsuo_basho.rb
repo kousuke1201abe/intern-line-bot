@@ -17,6 +17,7 @@ class MatsuoBasho
   end
 
   def message(symbol)
+    if phrase
     {
       type: 'text',
       text: symbol == :haiku ? HAIKU_MESSAGE_MAP.sample : "それ短歌ね\u{1F91A}"
