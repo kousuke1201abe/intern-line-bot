@@ -206,6 +206,7 @@ DEPENDENCIES
   line-bot-api
   listen
   natto
+  nokogiri
   pg (~> 0.18)
   puma
   rails (~> 6.0.2)

@@ -48,3 +48,5 @@ gem 'listen', group: :development
 gem 'natto'
 
 gem 'dotenv-rails'
+
+gem 'nokogiri'
