@@ -18,7 +18,7 @@ class MatsuoBasho
   def message(symbol)
     {
       type: 'text',
-      text: symbol == :haiku ? "おっ俳句じゃん\u{261D}" : "それ短歌ね\u{1F91A}"
+      text: symbol == :haiku ? "俳句じゃん\u{261D}" : "それ短歌ね\u{1F91A}"
     }
   end
 
