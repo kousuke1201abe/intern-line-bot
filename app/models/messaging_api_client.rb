@@ -26,13 +26,13 @@ class MessagingAPIClient < Line::Bot::Client
 
       matsuo_basho = MatsuoBasho.new(phrase: event.message['text'])
 
-      if matsuo_basho.haiku?
-        reply_message(event['replyToken'], matsuo_basho.message(:haiku))
-      elsif matsuo_basho.senryu?
-        reply_message(event['replyToken'], matsuo_basho.message(:senryu))
-      elsif matsuo_basho.tanka?
-        reply_message(event['replyToken'], matsuo_basho.message(:tanka))
-      end
+      reply_message(
+        event['replyToken'],
+        {
+          type: 'text',
+          text: matsuo_basho.message
+        }
+      )
     end
   end
 end

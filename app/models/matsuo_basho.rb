@@ -2,53 +2,48 @@ class MatsuoBasho
   attr_reader :phrase
 
   ALLOWED_POS_MAP = ["名詞", "動詞", "形容詞", "形容動詞", "副詞", "連体詞", "接続詞", "感動詞", "接頭詞", "フィラー"]
-  HAIKU_MESSAGE_MAP = ["俳句じゃん\u{261D}", "五七五\u{1F4AE}", "よっ俳人\u{1F61A}"]
+  HAIKU_MESSAGE_MAP = ["心に染みるなあ\u{263A}", "弟子にしてやる\u{1F624}", "よっ俳人\u{1F61A}"]
+  SENRYU_MESSAGE_MAP = ["おっ川柳\u{261D}", "五七五\u{1F4AE}", "これは名作\u{1F61A}"]
 
   def initialize(phrase:)
     @phrase = phrase
+  end
+
+  def message
+    return message_for_tanka if tanka?
+    return unless senryu?
+    kigo.present? ? message_for_haiku : message_for_senryu
+  end
+
+  private
+
+  def tanka?
+    match_beats?(5, 7, 5, 7, 7)
   end
 
   def senryu?
     match_beats?(5, 7, 5)
   end
 
-  def haiku?
-    kigo.present? && match_beats?(5, 7, 5)
-  end
-
-  def tanka?
-    match_beats?(5, 7, 5, 7, 7)
-  end
-
   def kigo
-    Widget.pluck(:name).map { |name| phrase.scan(name).first }.compact.join(",")
+    @kigo ||= Widget.where("'#{phrase}' ~ name").pluck(:name).join(", ")
   end
 
-  def message(symbol)
-    {
-      type: 'text',
-      text: text(symbol)
-    }
+  def message_for_tanka
+    "それ短歌ね\u{1F91A}"
   end
 
-  def text(symbol)
-    if symbol == :haiku
-      text_for_haiku.chomp!
-    elsif symbol == :senryu
-      "それ川柳ね\u{1F91A}"
-    elsif symbol == :tanka?
-      "それ短歌ね\u{1F91A}"
-    end
-  end
-
-  def text_for_haiku
-    <<~EOS
+  def message_for_haiku
+    text = <<~EOS
       #{HAIKU_MESSAGE_MAP.sample}
-      季語 #{kigo}
+      季語は「#{kigo}」だな\u{1F4AE}
     EOS
+    text.chomp!
   end
 
-  private
+  def message_for_senryu
+    SENRYU_MESSAGE_MAP.sample
+  end
 
   def match_beats?(*beats)
     return false unless mecab_array.match_letters?(beats)
