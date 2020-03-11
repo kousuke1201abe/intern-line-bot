@@ -24,13 +24,13 @@ class MessagingAPIClient < Line::Bot::Client
       return true unless event.is_a?(Line::Bot::Event::Message)
       return true unless event.type == "text"
 
-      matsuo_basho = MatsuoBasho.new(phrase: event.message['text'])
+      haiku = HaikuGenerator.generate(phrase: event.message['text'])
 
       reply_message(
         event['replyToken'],
         {
           type: 'text',
-          text: matsuo_basho.message
+          text: MatsuoBasho.new(haiku).reply_message
         }
       )
     end
