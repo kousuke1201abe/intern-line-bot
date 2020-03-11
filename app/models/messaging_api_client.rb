@@ -24,7 +24,7 @@ class MessagingAPIClient < Line::Bot::Client
       return true unless event.is_a?(Line::Bot::Event::Message)
       return true unless event.type == "text"
 
-      if event.message['text'].split.first.downcase == "wikipedia"
+      if event.message['text'].split(' ', 2).first == "詠んで"
         event.message['text'] = WikipediaAPIClient.new(query: event.message['text'].split(' ', 2).last).search_text
       end
 
