@@ -81,6 +81,14 @@ class HaikuGenerator
       end
     end
     raise if res.blank?
+    res.map! do |h|
+      kigo = Widget.where("'#{h}' ~ name").pluck(:name).join(", ")
+      if kigo.present?
+        "#{h} (季語: #{kigo})"
+      else
+        h
+      end
+    end
     res
   end
 end
