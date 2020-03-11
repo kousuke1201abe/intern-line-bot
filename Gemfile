@@ -50,3 +50,5 @@ gem 'natto'
 gem 'dotenv-rails'
 
 gem 'nokogiri'
+
+gem 'wikipedia-client'

@@ -192,6 +192,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    wikipedia-client (1.10.0)
     zeitwerk (2.3.0)
 
 PLATFORMS
@@ -217,6 +218,7 @@ DEPENDENCIES
   spring
   turbolinks
   uglifier
+  wikipedia-client
 
 RUBY VERSION
    ruby 2.7.0p0
