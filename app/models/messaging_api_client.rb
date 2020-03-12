@@ -26,17 +26,35 @@ class MessagingAPIClient < Line::Bot::Client
 
       if event.message['text'].split(' ', 2).first == "詠んで"
         event.message['text'] = WikipediaAPIClient.new(query: event.message['text'].split(' ', 2).last).search_text
+        begin
+          haiku = HaikuGenerator.generate(phrase: event.message['text'])
+          reply_message(
+            event['replyToken'],
+            {
+              type: 'text',
+              text: MatsuoBasho.new(haiku).reply_message
+            }
+          )
+        rescue
+          reply_message(
+            event['replyToken'],
+            {
+              type: 'text',
+              text: "その記事に 俳句はなかった みたいです"
+            }
+          )
+        end
+      else
+        haiku = HaikuGenerator.generate(phrase: event.message['text'])
+
+        reply_message(
+          event['replyToken'],
+          {
+            type: 'text',
+            text: MatsuoBasho.new(haiku).reply_message
+          }
+        )
       end
-
-      haiku = HaikuGenerator.generate(phrase: event.message['text'])
-
-      reply_message(
-        event['replyToken'],
-        {
-          type: 'text',
-          text: MatsuoBasho.new(haiku).reply_message
-        }
-      )
     end
   end
 end
